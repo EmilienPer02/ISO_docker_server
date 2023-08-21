@@ -15,6 +15,6 @@ services:
     environment:
       - VAULT_ADDR=http://0.0.0.0:8200
       - VAULT_API_ADDR=http://0.0.0.0:8200
-    command: server
+    command: server -config=
     cap_add:
       - IPC_LOCK
