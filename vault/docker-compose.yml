@@ -10,16 +10,6 @@ services:
       - VAULT_DEV_ROOT_TOKEN_ID=root-token # Ceci est un token de développement, NE PAS UTILISER EN PRODUCTION
     volumes:
       - ./data:/vault/data # Volume pour persister les données Vault
-    command: server -dev -dev-root-token-id=root-token -log-level=debug # Mode développement
-
-  initialize-vault:
-    image: hashicorp/vault:latest
-    container_name: initialize-vault
-    depends_on:
-      - vault
-    environment:
-      - VAULT_ADDR=http://vault:8200
-      - VAULT_TOKEN=root-token # Token de développement
     command: >
       sh -c "
       
