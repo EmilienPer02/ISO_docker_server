@@ -24,7 +24,6 @@ ENV PATH="PATH=$PATH:$PWD/vault"
 
 # add the config file
 COPY ./config/vault-config.json /vault/config/vault-config.json
-RUN cat /vault/config/vault-config.json
 
 # expose port 8200
 EXPOSE 8200
