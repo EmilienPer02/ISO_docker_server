@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   vault:
-    image: vault:latest
+    image: harchicorp/vault:latest
     container_name: vault
     ports:
       - "8200:8200" # Port utilisé par Vault
@@ -13,7 +13,7 @@ services:
     command: server -dev -dev-root-token-id=root-token -log-level=debug # Mode développement
 
   initialize-vault:
-    image: vault:latest
+    image: harchicorp/vault:latest
     container_name: initialize-vault
     depends_on:
       - vault
@@ -22,6 +22,7 @@ services:
       - VAULT_TOKEN=root-token # Token de développement
     command: >
       sh -c "
+      
         sleep 10 && # Attendre que Vault démarre
         vault operator init -key-shares=1 -key-threshold=1 &&
         vault login root-token &&
