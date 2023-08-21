@@ -1,35 +1,37 @@
 #!/bin/bash
 
-# Vérifiez si Vault est déjà en cours d'exécution en production
-if docker ps | grep -q "vault"; then
-  echo "Vault est déjà en cours d'exécution en production."
-  exit 1
-fi
+# Variables d'environnement pour Vault
+export VAULT_ADDR=http://localhost:8200
+export VAULT_DEV_ROOT_TOKEN_ID=myroottoken
 
-# Démarrez Vault en production
-docker run -d --name vault -p 8200:8200 hashicorp/vault:latest -e VAULT_ADDR='http://127.0.0.1:8200'
+# Démarrez Vault en tant que conteneur Docker
+docker run -d --cap-add=IPC_LOCK -e VAULT_DEV_ROOT_TOKEN_ID=$VAULT_DEV_ROOT_TOKEN_ID -p 8200:8200 --name vault-dev vault
 
-# Attendez que Vault démarre
-echo "Attente de démarrage de Vault..."
-sleep 10
+# Attendez que Vault démarre (vous pouvez personnaliser le temps d'attente en fonction de votre système)
+sleep 5
 
-# Initialisez Vault et stockez les clés de déchiffrement dans un fichier temporaire
-docker exec vault vault operator init  -key-shares=3 -key-threshold=2 > keys.txt
+# Initialisez Vault (il s'agit d'un environnement de développement, ne le faites pas en production)
+docker exec -it vault-dev vault operator init -key-shares=1 -key-threshold=1 > vault_init.txt
 
-# Déverrouillez Vault avec la clé de déchiffrement principale
-cat keys.txt | grep "Unseal Key 1" | awk '{print $4}' | docker exec -i vault vault operator unseal -
-cat keys.txt | grep "Unseal Key 2" | awk '{print $4}' | docker exec -i vault vault operator unseal -
+# Déverrouillez Vault avec la clé d'initialisation (ATTENTION : c'est une opération critique, stockez les clés en toute sécurité en production)
+UNSEAL_KEY=$(cat vault_init.txt | grep "Unseal Key 1:" | awk '{print $4}')
+docker exec -it vault-dev vault operator unseal $UNSEAL_KEY
 
-# Utilisez la clé racine pour vous authentifier
-cat keys.txt | grep "Initial Root Token" | awk '{print $4}' | docker exec -i vault vault login -
+# Autorisez Vault à gérer des secrets (ceci est un exemple, adaptez-le à vos besoins de politique)
+docker exec -it vault-dev vault policy write my-policy - <<EOF
+path "secret/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+EOF
 
-# Activez le moteur de stockage de secrets KV
-docker exec vault vault -dev secrets enable -path=mysecrets kv
+# Créez un token d'accès avec la politique précédemment définie (à adapter en production)
+docker exec -it vault-dev vault token create -policy=my-policy > token.txt
 
-# Créez un secret
-docker exec vault vault -dev kv put mysecrets/mysecretkey myvalue=mysecretvalue
+# Stockez un secret dans Vault (à adapter en production)
+docker exec -it vault-dev vault kv put secret/my-secret key1=value1 key2=value2
 
-# Nettoyez le fichier temporaire contenant les clés
-rm keys.txt
+# Affichez le token pour l'accès à Vault
+echo "Token d'accès à Vault :"
+cat token.txt
 
-echo "Vault a été déployé en production et un secret a été créé."
+# Assurez-vous de stocker en toute sécurité le token et les clés d'initialisation en production
