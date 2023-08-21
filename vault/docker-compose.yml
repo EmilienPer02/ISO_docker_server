@@ -12,10 +12,11 @@ services:
       - ./data:/vault/data # Volume pour persister les données Vault
     command: >
       sh -c "
-      
+        vault server -log-level=debug
         sleep 10 && # Attendre que Vault démarre
         vault operator init -key-shares=1 -key-threshold=1 &&
         vault login root-token &&
         vault secrets enable -path=mysecrets kv &&
         vault kv put mysecrets/mysecretkey myvalue=mysecretvalue
       "
+
