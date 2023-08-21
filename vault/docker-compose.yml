@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   vault:
-    image: harchicorp/vault:latest
+    image: hashicorp/vault:latest
     container_name: vault
     ports:
       - "8200:8200" # Port utilisé par Vault
@@ -13,7 +13,7 @@ services:
     command: server -dev -dev-root-token-id=root-token -log-level=debug # Mode développement
 
   initialize-vault:
-    image: harchicorp/vault:latest
+    image: hashicorp/vault:latest
     container_name: initialize-vault
     depends_on:
       - vault
