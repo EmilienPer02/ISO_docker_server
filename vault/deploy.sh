@@ -13,7 +13,7 @@ storage "file" {
 EOF
 
 # Démarrez Vault en tant que conteneur Docker avec la configuration et le stockage persistant
-docker run -d --cap-add=IPC_LOCK --name=vault-server -p 8200:8200 -v $(pwd)/vault-config.hcl:/vault/config/vault-config.hcl harshicorp/vault:latest
+docker run -d --cap-add=IPC_LOCK --name=vault-server -p 8200:8200 -v $(pwd)/vault-config.hcl:/vault/config/vault-config.hcl harchicorp/vault:latest
 
 # Attendez que Vault démarre (vous pouvez personnaliser le temps d'attente en fonction de votre système)
 sleep 5
