@@ -4,8 +4,26 @@
 export VAULT_ADDR=http://localhost:8200
 export VAULT_DEV_ROOT_TOKEN_ID=myroottoken
 
-# Démarrez Vault en tant que conteneur Docker
-docker run -d --cap-add=IPC_LOCK -e VAULT_DEV_ROOT_TOKEN_ID=$VAULT_DEV_ROOT_TOKEN_ID -p 8200:8200 --name vault-dev vault
+# Créez un réseau Docker pour les conteneurs Vault
+docker network create vault-net
+
+# Créez un volume Docker pour le stockage persistant de Vault
+docker volume create vault-data
+
+# Créez un fichier de configuration HCL pour Vault
+cat <<EOF > vault-config.hcl
+listener "tcp" {
+  address = "0.0.0.0:8200"
+  tls_disable = 1
+}
+
+storage "file" {
+  path = "/vault/data"
+}
+EOF
+
+# Démarrez Vault en tant que conteneur Docker avec la configuration et le stockage persistant
+docker run -d --cap-add=IPC_LOCK --network=vault-net --name=vault-server -p 8200:8200 -v vault-data:/vault/data -v $(pwd)/vault-config.hcl:/vault/config/vault-config.hcl vault
 
 # Attendez que Vault démarre (vous pouvez personnaliser le temps d'attente en fonction de votre système)
 sleep 5
