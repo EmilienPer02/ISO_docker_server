@@ -7,14 +7,14 @@ if docker ps | grep -q "vault"; then
 fi
 
 # Démarrez Vault en production
-docker run -d --name vault -p 8200:8200 hashicorp/vault:latest
+docker run -d --name vault -p 8200:8200 hashicorp/vault:latest -e VAULT_ADDR='http://127.0.0.1:8200'
 
 # Attendez que Vault démarre
 echo "Attente de démarrage de Vault..."
 sleep 10
 
 # Initialisez Vault et stockez les clés de déchiffrement dans un fichier temporaire
-docker exec vault vault operator -dev init  -key-shares=3 -key-threshold=2 > keys.txt
+docker exec vault vault operator init  -key-shares=3 -key-threshold=2 > keys.txt
 
 # Déverrouillez Vault avec la clé de déchiffrement principale
 cat keys.txt | grep "Unseal Key 1" | awk '{print $4}' | docker exec -i vault vault operator unseal -
