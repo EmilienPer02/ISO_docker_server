@@ -15,4 +15,4 @@ services:
       - ./vault-data:/vault-data
     healthcheck:
       retries: 5
-    command: /vault-data/workflow-vault.sh
+    command: sh -c "chmod +x /vault-data/workflow-vault.sh && ./vault-data/workflow-vault.sh"
