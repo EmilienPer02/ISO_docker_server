@@ -2,7 +2,7 @@ version: '3.1'
 services:
   vault:
     image: hashicorp/vault
-    container_name: vault:latest
+    container_name: vault
     ports:
       - "8200:8200"
       # Change   this to the following if you have reverse proxy setup
