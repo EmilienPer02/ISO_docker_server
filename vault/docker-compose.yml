@@ -9,7 +9,7 @@ services:
       #- "127.0.0.1:8200:8200"
     volumes:
       - ./config.hcl:/vault/config/config.hcl:ro
-      - ./vault_data:/vault_data/data
+      - ./vault_data:/vault_data/
     cap_add:
       - IPC_LOCK
     command: server
