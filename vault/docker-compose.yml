@@ -14,4 +14,4 @@ services:
       - ./vault-data:/vault-data
     healthcheck:
       retries: 5
-    command: sh -c "chmod +x /vault-data/workflow-vault.sh && ./vault-data/workflow-vault.sh"
+    entrypoint: vault server -config=./vault-data/vault.hcl
