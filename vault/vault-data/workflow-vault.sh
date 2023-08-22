@@ -1,5 +1,5 @@
 # Start vault
-vault server -config vault-test.hcl
+vault server -config ./vault-data/vault.hcl
 
 # Export values
 export VAULT_ADDR='https://0.0.0.0:8201'
