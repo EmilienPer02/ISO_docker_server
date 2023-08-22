@@ -2,15 +2,16 @@
 vault server -config ./vault-data/vault.hcl
 
 # Export values
-export VAULT_ADDR='https://0.0.0.0:8201'
+export VAULT_ADDR='https://0.0.0.0:8200'
 export VAULT_SKIP_VERIFY='true'
-
+echo "-----------------------------------------------------------------------------------------------------------------------"
 # Parse unsealed keys
 mapfile -t keyArray < <( grep "Unseal Key " < generated_keys.txt  | cut -c15- )
 
 vault operator unseal ${keyArray[0]}
 vault operator unseal ${keyArray[1]}
 vault operator unseal ${keyArray[2]}
+echo "-----------------------------------------------------------------------------------------------------------------------"
 
 # Get root token
 mapfile -t rootToken < <(grep "Initial Root Token: " < generated_keys.txt  | cut -c21- )
@@ -20,6 +21,7 @@ export VAULT_TOKEN=${rootToken[0]}
 
 # Enable kv
 vault secrets enable -version=1 kv
+echo "-----------------------------------------------------------------------------------------------------------------------"
 
 # Enable userpass and add default user
 vault auth enable userpass
