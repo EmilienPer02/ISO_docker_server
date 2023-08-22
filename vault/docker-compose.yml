@@ -15,4 +15,4 @@ services:
       - ./vault-data:/vault-data
     healthcheck:
       retries: 5
-    entrypoint: vault server -config=./vault-data/vault.hcl
+    entrypoint: sh -c 'echo "------------------------------------------------------" && vault server -config=./vault-data/vault.hcl && echo "------------------------------------------------------"'
