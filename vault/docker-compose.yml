@@ -8,8 +8,8 @@ services:
       # Change this to the following if you have reverse proxy setup
       #- "127.0.0.1:8200:8200"
     volumes:
-      - ./config.hcl:/vault/config/config.hcl:ro
-      - ./vault_data:/vault/data:z
+      - ./config.hcl:./vault/config/config.hcl:ro
+      - ./vault_data:./vault/data:z
     cap_add:
       - IPC_LOCK
     command: server
