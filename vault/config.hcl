@@ -14,4 +14,5 @@ default_lease_ttl = "168h"
 max_lease_ttl     = "720h"
 api_addr          = "http://0.0.0.0:8200"
 ui                = 1
+VAULT_SKIP_VERIFY = "true"
 
