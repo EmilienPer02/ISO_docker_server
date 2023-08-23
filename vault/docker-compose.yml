@@ -11,6 +11,4 @@ services:
     cap_add:
      - IPC_LOCK
     command: server
-    environment:
-      - TZ=Europe/Berlin
     restart: always
