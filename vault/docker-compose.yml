@@ -8,6 +8,7 @@ services:
       - "8200:8200"
     volumes:
       - ./config.hcl:/vault/config/config.hcl:ro
+      - ./vault_data/:/vault_data/
     cap_add:
      - IPC_LOCK
     restart: always
