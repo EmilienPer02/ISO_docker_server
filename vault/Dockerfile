@@ -30,4 +30,4 @@ RUN ls /tmp
 EXPOSE 8200
 
 # run vault
-ENTRYPOINT ["pwd"]
+ENTRYPOINT ["ls /tmp"]
