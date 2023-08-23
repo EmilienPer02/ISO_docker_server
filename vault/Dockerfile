@@ -24,10 +24,10 @@ RUN wget --quiet --output-document=/tmp/vault.zip https://releases.hashicorp.com
 ENV PATH="PATH=$PATH:$PWD/vault"
 
 # add the config file
-COPY config.hcl /tmp/
-RUN ls /tmp
+COPY config.hcl /vault/
+RUN ls /vault
 # expose port 8200
 EXPOSE 8200
 
 # run vault
-ENTRYPOINT ["ls /tmp"]
+ENTRYPOINT ["ls /vault"]
