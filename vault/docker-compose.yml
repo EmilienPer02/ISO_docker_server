@@ -3,6 +3,7 @@ services:
   vault:
     build:
       dockerfile: Dockerfile
+      context: .
     container_name: vault
     ports:
       - "8200:8200"
