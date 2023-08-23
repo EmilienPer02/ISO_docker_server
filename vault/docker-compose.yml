@@ -5,8 +5,6 @@ services:
     container_name: vault
     ports:
       - "8200:8200"
-      # Change this to the following if you have reverse proxy setup
-      #- "127.0.0.1:8200:8200"
     volumes:
       - ./config.hcl:/vault/config/config.hcl:ro
       - ./vault_data:/vault_data/
