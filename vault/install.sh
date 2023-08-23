@@ -12,6 +12,6 @@ docker exec -it vault vault operator unseal  --tls-skip-verify $seal_key_1
 docker exec -it vault vault login --tls-skip-verify $root_token
 docker exec -it vault vault secrets enable --tls-skip-verify -version=2 kv
 echo "----------------------------------------------------------------------------------"
-cat keys.json
+cat key.json
 rm key.json
 echo "----------------------------------------------------------------------------------"
