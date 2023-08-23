@@ -8,8 +8,8 @@ services:
     volumes:
       - ./config.hcl:/vault/config/config.hcl:ro
       - ./vault_data:/vault_data/
-    #cap_add:
-     # - IPC_LOCK
+    cap_add:
+     - IPC_LOCK
     command: server
     environment:
       - TZ=Europe/Berlin
