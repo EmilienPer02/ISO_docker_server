@@ -30,4 +30,4 @@ RUN ls /tmp
 EXPOSE 8200
 
 # run vault
-ENTRYPOINT ["pwd && ls /tmp && vault server -config /tmp/config.hcl"]
+ENTRYPOINT ["pwd"]
