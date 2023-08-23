@@ -1,14 +1,13 @@
 version: '3.1'
 services:
   vault:
-    image: hashicorp/vault
+    build:
+      dockerfile: Dockerfile
     container_name: vault
     ports:
       - "8200:8200"
     volumes:
       - ./config.hcl:/vault/config/config.hcl:ro
-      - ./vault_data:/vault_data/
     cap_add:
      - IPC_LOCK
-    command: server
     restart: always
