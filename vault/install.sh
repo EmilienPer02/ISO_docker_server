@@ -9,7 +9,7 @@ seal_key_1=$(cat key.json | jq ".unseal_keys_b64[1]"| sed 's/\"//g' )
 root_token=$(cat key.json | jq ".root_token"| sed 's/\"//g' )
 docker exec -it vault vault operator unseal --tls-skip-verify $seal_key_0
 docker exec -it vault vault operator unseal  --tls-skip-verify $seal_key_1
-docker exec -it prodvault vault login --tls-skip-verify $root_token
+docker exec -it vault vault login --tls-skip-verify $root_token
 docker exec -it vault vault secrets enable --tls-skip-verify -version=2 kv
 echo "----------------------------------------------------------------------------------"
 cat keys.json
