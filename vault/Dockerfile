@@ -30,4 +30,4 @@ RUN ls /vault
 EXPOSE 8200
 
 # run vault
-ENTRYPOINT ["vault","server","-config","/tmp/config/hcl"]
+ENTRYPOINT ["vault","server","-config","/tmp/config.hcl"]
