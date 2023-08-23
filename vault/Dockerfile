@@ -25,7 +25,7 @@ ENV PATH="PATH=$PATH:$PWD/vault"
 
 # add the config file
 COPY ./config.hcl ~/config.hcl
-
+RUN ls
 # expose port 8200
 EXPOSE 8200
 
