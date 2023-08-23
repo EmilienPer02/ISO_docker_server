@@ -30,4 +30,4 @@ COPY ./config.hcl /vault/config/vault-config.json
 EXPOSE 8200
 
 # run vault
-ENTRYPOINT ["vault"]
+ENTRYPOINT ["vault","server"]
