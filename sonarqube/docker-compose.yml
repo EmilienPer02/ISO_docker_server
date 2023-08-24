@@ -1,13 +1,17 @@
 version: '3'
 
 services:
-  db_sonarqube:
-      image: postgres
-      restart: unless-stopped
-      environment:
-        - POSTGRES_USER=myappadmin
-        - POSTGRES_PASSWORD=password123
-        - POSTGRES_DB=sonarqube
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_sonarqube
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_USER: sonar
+      MYSQL_PASSWORD: sonar_password
+      MYSQL_DATABASE: sonar
+    volumes:
+      - mysql_data:/var/lib/mysql
+
 volumes:
   sonarqube-db-data:
   sonarqube_data:
