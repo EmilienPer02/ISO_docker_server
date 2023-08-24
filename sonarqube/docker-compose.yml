@@ -5,7 +5,6 @@ services:
     image: mysql:5.7
     container_name: mysql_sonarqube
     environment:
-      MYSQL_ROOT_PASSWORD: your_root_password
       MYSQL_USER: sonar
       MYSQL_PASSWORD: sonar_password
       MYSQL_DATABASE: sonar
