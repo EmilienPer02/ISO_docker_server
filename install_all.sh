@@ -9,3 +9,5 @@ cd ./vault
 cd ..
 root_token=$(cat key.json | jq ".root_token"| sed 's/\"//g' )
 
+cd sonarqube
+./install.sh $root_token
