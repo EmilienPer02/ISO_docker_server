@@ -6,7 +6,6 @@ VAULT_TOKEN=$1
 
 # Variables
 VAULT_ADDR="https://localhost:8200"  # Adresse de votre serveur Vault
-VAULT_TOKEN="YOUR_VAULT_TOKEN"      # Votre token d'authentification Vault
 MYSQL_RANDOM_PASSWORD=$(echo $RANDOM | md5sum | head -c 20; echo;)
 
 #Start mysql
