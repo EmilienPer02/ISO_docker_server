@@ -5,5 +5,6 @@ docker-compose -f ./treafic/docker-compose.yml up -d
 
 # Install vault and get root token
 cd ./vault
-./install.sh > key.json
+./install.sh > ../key.json
+cd ..
 cat key.json
