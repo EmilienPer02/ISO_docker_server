@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-mkdir -p "logs"
-mkdir -p "./vault_data"
+mkdir -p logs
+mkdir -p ./vault_data
 now=$(date +"%m_%d_%Y")
 log="/logs/$now.txt"
 #Create a SSL Certificate for HTTPS
