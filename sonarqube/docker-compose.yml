@@ -9,6 +9,8 @@ services:
       MYSQL_USER: sonar
       MYSQL_PASSWORD: sonar_password
       MYSQL_DATABASE: sonar
+    ports:
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     extra_hosts:
