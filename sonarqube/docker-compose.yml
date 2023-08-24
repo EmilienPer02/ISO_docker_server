@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db_sonarqube:
+      image: postgres
+      restart: unless-stopped
+      environment:
+        - POSTGRES_USER=myappadmin
+        - POSTGRES_PASSWORD=password123
+        - POSTGRES_DB=sonarqube
+volumes:
+  sonarqube-db-data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  postgresql:
