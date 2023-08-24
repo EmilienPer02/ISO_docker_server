@@ -11,6 +11,8 @@ services:
       MYSQL_DATABASE: sonar
     volumes:
       - mysql_data:/var/lib/mysql
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   sonarqube-db-data:

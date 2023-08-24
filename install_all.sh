@@ -7,4 +7,5 @@ docker-compose -f ./treafic/docker-compose.yml up -d
 cd ./vault
 ./install.sh > ../key.json
 cd ..
-cat key.json
+root_token=$(cat key.json | jq ".root_token"| sed 's/\"//g' )
+
