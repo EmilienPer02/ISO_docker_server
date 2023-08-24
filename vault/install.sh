@@ -1,27 +1,5 @@
 #!/usr/bin/env sh
-VERBOSE=false
-
-# Verbose function
-verbose() {
-    if [ "$VERBOSE" = true ]; then
-        echo "$1"
-    fi
-}
-
-#Analysing script options
-while getopts ":v" opt; do
-    case $opt in
-        v)
-            VERBOSE=true
-            ;;
-        \?)
-            echo "Option invalide: -$OPTARG" >&2
-            ;;
-    esac
-done
-
-#shift $((OPTIND-1))
-
+mkdir p "./vault_data"
 #Create a SSL Certificate for HTTPS
 openssl req -x509 -newkey rsa:4096 -keyout ./vault_data/key.pem -out ./vault_data/certificate.pem -sha256 -days 3650 -nodes -addext 'subjectAltName = IP:127.0.0.1' -subj "/ST=ISO_Server/L=ISO_Server/O=ISO_Server/OU=ISO_Server/IP=127.0.0.1" 
 
