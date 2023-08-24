@@ -14,4 +14,4 @@ services:
      - IPC_LOCK
     restart: always
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host:host-gateway"
