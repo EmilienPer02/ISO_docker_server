@@ -8,6 +8,6 @@ cd ./vault
 ./install.sh > ../key.json
 cd ..
 root_token=$(cat key.json | jq ".root_token"| sed 's/\"//g' )
-
+echo "etape mysql"
 cd sonarqube
 ./install.sh $root_token

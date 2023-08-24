@@ -19,3 +19,5 @@ curl 'https://10.1.20.100:8200/v1/database/config/mysql' \
   -H "X-Vault-Token: $VAULT_TOKEN" \
   -d '{"backend":"database","name":"mysql","plugin_name":"mysql-legacy-database-plugin","verify_connection":true,"connection_url":"{{username}}:{{password}}@tcp(host:3306)/sonar","username":"root","password":"your_root_password","max_open_connections":4,"max_idle_connections":0,"max_connection_lifetime":"0s"}' \
   -k
+
+echo "done"
