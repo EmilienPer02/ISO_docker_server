@@ -4,7 +4,7 @@ services:
   mysql:
     image: mysql:latest
     environment:
-       - MYSQL_DATABASE=sonar
+       - MYSQL_DATABASE=sonardb
     ports:
       - "3306:3306"
 
