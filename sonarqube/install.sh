@@ -7,7 +7,8 @@ VAULT_TOKEN=$1
 # Variables
 VAULT_ADDR="https://localhost:8200"  # Adresse de votre serveur Vault
 MYSQL_RANDOM_PASSWORD=$(echo $RANDOM | md5sum | head -c 12; echo;)
-echo $MYSQL_RANDOM_PASSWORD
+
+
 #Start mysql
 docker-compose run --rm -d -e MYSQL_ROOT_PASSWORD=$MYSQL_RANDOM_PASSWORD -p '3306:3306' mysql
 #cmd_enable_database_engine=curl -X POST -H "X-Vault-Token: $VAULT_TOKEN" -d '{"type": "database"}' $VAULT_ADDR/v1/sys/mounts/database -k
@@ -18,6 +19,7 @@ cmd_create_connection="curl $VAULT_ADDR/v1/database/config/mysql -H \"x-vault-to
 echo "-----------------------------------------------------------------------------------------------------------------"
 cmd_create_connection_output=$(eval $cmd_create_connection)
 cmd_create_connection_exit_code=$?
+echo $VAULT_TOKEN $VAULT_ADDR $MYSQL_RANDOM_PASSWORD
 echo $cmd_create_connection_output
 echo $cmd_create_connection_exit_code
 echo "-----------------------------------------------------------------------------------------------------------------"
