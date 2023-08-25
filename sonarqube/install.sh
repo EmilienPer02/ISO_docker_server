@@ -7,9 +7,10 @@ VAULT_TOKEN=$1
 # Variables
 VAULT_ADDR="https://localhost:8200"  # Adresse de votre serveur Vault
 MYSQL_RANDOM_PASSWORD=$(echo $RANDOM | md5sum | head -c 20; echo;)
-echo $MYSQL_RANDOM_PASSWORD >  mysql.env
+echo $MYSQL_RANDOM_PASSWORD
 #Start mysql
- docker-compose up -d
+ docker-compose build
+ docker-compose run --rm -e MYSQL_ROOT_PASSWORD=$MYSQL_RANDOM_PASSWORD mysql
 
 # Activer l'engine "databases" dans Vault
 curl -X POST -H "X-Vault-Token: $VAULT_TOKEN" -d '{"type": "database"}' $VAULT_ADDR/v1/sys/mounts/database -k

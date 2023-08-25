@@ -3,20 +3,17 @@ version: '3'
 services:
   mysql:
     image: mysql:5.7
-    container_name: mysql_sonarqube
+    container_name: mysql
     environment:
       MYSQL_USER: sonar
       MYSQL_PASSWORD: sonar_password
       MYSQL_DATABASE: sonar
-      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     extra_hosts:
       - "host:host-gateway"
-    secrets:
-      - mysql_root_password
 
 volumes:
   sonarqube-db-data:
@@ -24,6 +21,3 @@ volumes:
   sonarqube_extensions:
   sonarqube_logs:
   mysql_data:
-secrets:
-  mysql_root_password:
-    file: mysql.env
