@@ -23,5 +23,5 @@ if [ $cmd_create_connection_exit_code -ne 0 ] || echo "$cmd_create_connection_ou
 fi
 curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"policy": "path \"'$VAULT_PATH'/*\" { capabilities = [\"read\"] }"}' $VAULT_ADDR/v1/sys/policies/acl/sonarqube-policy -k
 curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"db_name": "sonardb","creation_statements": "CREATE USER '\''{{name}}'\''@'\''%'\'' IDENTIFIED BY '\''{{password}}'\''; GRANT ALL PRIVILEGES ON sonardb.* TO '\''{{name}}'\''@'\''%'\'';","default_ttl": "1h","max_ttl": "24h"}' $VAULT_ADDR/v1/database/roles/$VAULT_DB_ROLE -k
-SONAR_TOKEN=$(curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"policies": ["sonarqube-policy"]}' $VAULT_ADDR/v1/auth/token/create | jq -r '.auth.client_token')
+SONAR_TOKEN=$(curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"policies": ["sonarqube-policy"]}' $VAULT_ADDR/v1/auth/token/create -k| jq -r '.auth.client_token')
 echo "Token SonarQube généré : $SONAR_TOKEN"
