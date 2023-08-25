@@ -4,9 +4,7 @@ services:
   mysql:
     image: mysql:latest
     environment:
-      MYSQL_USER: sonar
-      MYSQL_PASSWORD: sonar_password
-      MYSQL_DATABASE: sonar
+       - MYSQL_DATABASE=sonar
     ports:
       - "3306:3306"
 
