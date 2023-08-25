@@ -15,9 +15,12 @@ docker-compose run --rm -d -e MYSQL_ROOT_PASSWORD=$MYSQL_RANDOM_PASSWORD -p '330
 cmd_enable_database_engine="curl -X POST -H \"X-Vault-Token: $VAULT_TOKEN\" -d '{\"type\": \"database\"}' $VAULT_ADDR/v1/sys/mounts/database -k"
 cmd_create_connection="curl $VAULT_ADDR/v1/database/config/mysql -H \"x-vault-token:$VAULT_TOKEN\" --data-raw '{\"backend\":\"database\",\"name\":\"mysql\",\"plugin_name\":\"mysql-rds-database-plugin\",\"verify_connection\":true,\"connection_url\":\"{{username}}:{{password}}@tcp(host:3306)/sonar\",\"username\":\"root\",\"password\":\"'$MYSQL_RANDOM_PASSWORD'\",\"max_open_connections\":4,\"max_idle_connections\":0,\"max_connection_lifetime\":\"0s\"}' --insecure"
 
-# Exécuter la commande cmd_create_connection et stocker la sortie et le code de retour dans des variables
+echo "-----------------------------------------------------------------------------------------------------------------"
 cmd_create_connection_output=$(eval $cmd_create_connection)
 cmd_create_connection_exit_code=$?
+echo $cmd_create_connection_output
+echo $cmd_create_connection_exit_code
+echo "-----------------------------------------------------------------------------------------------------------------"
 
 # Vérifier si la commande a échoué (code de retour différent de zéro) ou si la sortie contient "no handler for route"
 if [ $cmd_create_connection_exit_code -ne 0 ] || echo "$cmd_create_connection_output" | grep -q "no handler for route"; then
