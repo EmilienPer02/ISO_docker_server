@@ -16,7 +16,7 @@ curl -X POST -H "X-Vault-Token: $VAULT_TOKEN" -d '{"type": "database"}' $VAULT_A
 curl 'https://10.1.20.100:8200/v1/database/config/mysql' \
   -H "x-vault-token:$VAULT_TOKEN" \
   --data-raw '{"backend":"database","name":"mysql","plugin_name":"mysql-rds-database-plugin","verify_connection":true,"connection_url":"{{username}}:{{password}}@tcp(host:3306)/sonar","username":"root","password":"'$MYSQL_RANDOM_PASSWORD'","max_open_connections":4,"max_idle_connections":0,"max_connection_lifetime":"0s"}' \
-  --insecure
+  --insecure \
   --trace -
 
 echo "done"
