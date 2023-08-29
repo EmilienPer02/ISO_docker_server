@@ -4,10 +4,11 @@ ENV VAULT_VERSION 1.8.2
 USER root
 RUN apt-get update && apt-get install -y unzip
 
-RUN wget --quiet --output-document=/tmp/vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
-    unzip /tmp/vault.zip -d /vault && \
-    rm -f /tmp/vault.zip && \
-    chmod +x /vault
+RUN wget --quiet -O vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip && \
+    unzip vault.zip && \
+    mv vault /usr/local/bin/ && \
+    rm vault.zip
+
 
 COPY vault-agent-config.hcl /etc/vault-agent/
 
