@@ -22,6 +22,7 @@ if [ $cmd_create_connection_exit_code -ne 0 ] || echo "$cmd_create_connection_ou
   eval $cmd_create_connection
 fi
 curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"policy": "path \"'$VAULT_PATH'/*\" { capabilities = [\"read\"] }"}' $VAULT_ADDR/v1/sys/policies/acl/sonarqube-policy -k
-curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"db_name": "sonardb","creation_statements": "CREATE USER '\''{{name}}'\''@'\''%'\'' IDENTIFIED BY '\''{{password}}'\''; GRANT ALL PRIVILEGES ON sonardb.* TO '\''{{name}}'\''@'\''%'\'';","default_ttl": "1h","max_ttl": "24h"}' $VAULT_ADDR/v1/database/roles/$VAULT_DB_ROLE -k
-SONAR_TOKEN=$(curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"policies": ["sonarqube-policy"]}' $VAULT_ADDR/v1/auth/token/create -k| jq -r '.auth.client_token')
-echo "Token SonarQube généré : $SONAR_TOKEN"
+sonarqube_token=$(curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"policies": ["sonarqube-policy"]}' $VAULT_ADDR/v1/auth/token/create -k|jq '.auth.client_token'| sed 's/\"//g')
+new_allowed_roles=$(curl $VAULT_ADDR/v1/database/config/sonardb -H "X-Vault-Token: $VAULT_TOKEN" -k|jq '.data.allowed_roles+=["sonarqube"]|.data.allowed_roles')
+curl $VAULT_ADDR/v1/database/config/sonardb  --data-raw "{\"allowed_roles\":$new_allowed_roles}" -k
+curl $VAULT_ADDR/v1/database/roles/sonarqube -H "X-Vault-Token: $VAULT_TOKEN" --data-raw $'{"backend":"database","name":"sonarqube","type":"dynamic","ttl":"3600s","max_ttl":"86400s","rotation_period":"24h","creation_statements":["CREATE USER \'{{name}}\'@\'%\' IDENTIFIED BY \'{{password}}\';GRANT ALL PRIVILEGES ON sonardb TO \'{{name}}\'@\'%\';"],"revocation_statements":["REVOKE ALL PRIVILEGES ON sonardb FROM \'{{name}}\';"],"path":"roles","db_name":"sonardb"}' -k
