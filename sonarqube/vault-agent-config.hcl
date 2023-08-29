@@ -8,7 +8,7 @@ auto_auth {
     }
   }
 
-  sink "kv" {
+  sink "databases" {
     config = {
       path = "secrets/database/credentials/sonarqube"
     }
