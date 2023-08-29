@@ -7,7 +7,15 @@ services:
        - MYSQL_DATABASE=sonardb
     ports:
       - "3306:3306"
-
+  sonarqube:
+    ports:
+        - "9000:9000"
+    extra_hosts:
+        - "host:host-gateway"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: sonarqube
 volumes:
   sonarqube-db-data:
   sonarqube_data:
