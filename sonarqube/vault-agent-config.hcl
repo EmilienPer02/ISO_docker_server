@@ -12,7 +12,7 @@ auto_auth {
       }
 
       # Chemin où le token client doit être stocké.
-      sink "env"{
+      sink "file"{
         config = {
           path = "auth/database/login"
         }
@@ -32,7 +32,7 @@ auto_auth {
   }
 
   # Méthode de récupération du token.
-  sink {
+  sink "env"{
     config = {
       path = "env:VAULT_TOKEN"
     }
