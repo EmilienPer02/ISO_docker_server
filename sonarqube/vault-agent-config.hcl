@@ -1,26 +1,48 @@
-exit_after_auth = false
-
+pid_file = "/var/run/vault-agent.pid"
 auto_auth {
-  method "client_token" {
-    mount_path = "auth/token"  # Le chemin du mont-point d'authentification du client_token
+  method "database" {
     config = {
-      client_token = "$VAULT_CLIENT_TOKEN"  # Remplacez par votre propre client_token
+      # Le type de méthode d'authentification (dans ce cas, "database").
+      type = "database"
+
+      # Chemin du secret qui contient les informations d'identification du client.
+      config = {
+        #credentials = "database/creds/sonarqube"
+        credentials = "secrets/database/credentials/sonarqube"
+      }
+
+      # Chemin où le token client doit être stocké.
+      sink {
+        config = {
+          path = "auth/database/login"
+        }
+      }
+
+      # Temps avant le renouvellement du token.
+      template {
+        destination = "/etc/sonarqube/sonar.properties"
+        contents = <<EOL
+      # Fichier de configuration de SonarQube
+
+      sonar.jdbc.username = "{{secret "your/database/secrets" "username"}}"
+      sonar.jdbc.password = "{{secret "your/database/secrets" "password"}}"
+      EOL
+      }
     }
   }
 
-  sink "database" {
+  # Méthode de récupération du token.
+  sink {
     config = {
-      path = "secrets/database/credentials/sonarqube"
+      path = "env:VAULT_TOKEN"
     }
   }
 }
 
-template {
-  destination = "/etc/sonarqube/sonar.properties"
-  contents = <<EOL
-# Fichier de configuration de SonarQube
-
-sonar.jdbc.username = "{{secret "your/database/secrets" "username"}}"
-sonar.jdbc.password = "{{secret "your/database/secrets" "password"}}"
-EOL
+vault {
+  address = "https://host:8200"
 }
+
+exit_after_auth = true
+
+

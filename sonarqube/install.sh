@@ -26,3 +26,4 @@ sonarqube_token=$(curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --d
 new_allowed_roles=$(curl $VAULT_ADDR/v1/database/config/sonardb -H "X-Vault-Token: $VAULT_TOKEN" -k|jq '.data.allowed_roles+=["sonarqube"]|.data.allowed_roles')
 curl $VAULT_ADDR/v1/database/config/sonardb  --data-raw "{\"allowed_roles\":$new_allowed_roles}" -k
 curl $VAULT_ADDR/v1/database/roles/sonarqube -H "X-Vault-Token: $VAULT_TOKEN" --data-raw $'{"backend":"database","name":"sonarqube","type":"dynamic","ttl":"3600s","max_ttl":"86400s","rotation_period":"24h","creation_statements":["CREATE USER \'{{name}}\'@\'%\' IDENTIFIED BY \'{{password}}\';GRANT ALL PRIVILEGES ON sonardb TO \'{{name}}\'@\'%\';"],"revocation_statements":["REVOKE ALL PRIVILEGES ON sonardb FROM \'{{name}}\';"],"path":"roles","db_name":"sonardb"}' -k
+docker-compose build sonarqube
