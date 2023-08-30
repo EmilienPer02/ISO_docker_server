@@ -12,7 +12,7 @@ auto_auth {
       }
 
       # Chemin où le token client doit être stocké.
-      sink {
+      sink "env"{
         config = {
           path = "auth/database/login"
         }
