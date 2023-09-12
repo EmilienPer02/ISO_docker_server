@@ -14,13 +14,13 @@ docker-compose up -d >>$log 2>>$log
 sleep 5
 
 # Initialization
-sudo docker exec -it vault vault operator init -n 6 -t 2 --format=json --tls-skip-verify > key.json
-cat key.json
+sudo docker exec -it vault vault operator init -n 6 -t 2 --format=json --tls-skip-verify > /tmp/key.json
+cat /tmp/key.json
 
 # Unsealing
-seal_key_0=$(cat key.json |  jq ".unseal_keys_b64[0]" | sed 's/\"//g' )
-seal_key_1=$(cat key.json | jq ".unseal_keys_b64[1]"| sed 's/\"//g' )
-root_token=$(cat key.json | jq ".root_token"| sed 's/\"//g' )
+seal_key_0=$(cat /tmp/key.json |  jq ".unseal_keys_b64[0]" | sed 's/\"//g' )
+seal_key_1=$(cat /tmp/key.json | jq ".unseal_keys_b64[1]"| sed 's/\"//g' )
+root_token=$(cat /tmp/key.json | jq ".root_token"| sed 's/\"//g' )
 echo "--------------------------------" $seal_key_1 $seal_key_0 $root_token
 docker exec -it vault vault operator unseal --tls-skip-verify $seal_key_0 >>$log 2>>$log
 docker exec -it vault vault operator unseal  --tls-skip-verify $seal_key_1 >>$log 2>>$log
@@ -30,5 +30,5 @@ docker exec -it vault vault login --tls-skip-verify $root_token >>$log 2>>$log
 docker exec -it vault vault secrets enable --tls-skip-verify -version=2 kv >>$log 2>>$log
 
 # show and destroy vault secrets
-cat key.json
-rm key.json
+cat /tmp/key.json
+rm /tmp/key.json
